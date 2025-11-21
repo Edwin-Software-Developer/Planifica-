@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Planifica+ </title>
+
+  <!-- Tailwind CDN para demo -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Estilos extra -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="bg-gradient-to-b from-sky-50 to-white min-h-screen flex items-center justify-center p-6">
+
+  <main class="w-full max-w-5xl bg-white rounded-2xl shadow-2xl p-6 md:p-10">
+    <header class="flex items-center justify-between mb-6">
+      <h1 class="text-3xl font-extrabold text-sky-600 flex items-center gap-3">
+        <span class="text-4xl">📈</span> Planifica+
+      </h1>
+      <div class="text-sm text-slate-500">Proyecto de emprendimiento
+      </div>
+    </header>
+
+    <!-- Formulario -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <input id="sueldo" type="number" min="0" placeholder="Sueldo mensual (RD$)" class="input"/>
+      <input id="gastosFijos" type="number" min="0" placeholder="Gastos fijos (RD$)" class="input"/>
+      <input id="gastosOcio" type="number" min="0" placeholder="Gastos ocio (RD$)" class="input"/>
+      <input id="porcentaje" type="number" min="0" max="100" placeholder="% del sobrante a ahorrar" class="input"/>
+      <input id="meses" type="number" min="1" placeholder="Cantidad de meses" class="input"/>
+      <div class="flex gap-2">
+        <select id="periodo" class="input w-1/2">
+          <option value="mensual">Mensual</option>
+          <option value="quincenal">Quincenal</option>
+        </select>
+        <button id="calcularBtn" class="btn-primary w-1/2">Calcular</button>
+      </div>
+    </section>
+
+    <!-- Resultado resumen -->
+    <section id="resumen" class="hidden animate-fadeIn mb-6">
+      <div class="bg-sky-50 border border-sky-100 p-4 rounded-xl flex flex-col md:flex-row items-center justify-between gap-4">
+        <div>
+          <div class="text-sm text-slate-500">Meta por periodo</div>
+          <div id="metaText" class="text-2xl font-semibold text-sky-700">—</div>
+        </div>
+
+        <div>
+          <div class="text-sm text-slate-500">Meta total</div>
+          <div id="metaTotalText" class="text-lg font-medium">—</div>
+        </div>
+
+        <div class="text-center">
+          <div class="text-sm text-slate-500">Progreso actual</div>
+          <div id="acumuladoText" class="text-lg font-bold text-slate-700">RD$ 0.00</div>
+          <div class="w-64 mt-2">
+            <div class="h-3 bg-slate-200 rounded-full overflow-hidden">
+              <div id="progressBar" class="h-full bg-gradient-to-r from-sky-500 to-indigo-500 w-0 transition-all duration-700"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="grid md:grid-cols-2 gap-6">
+      <!-- Lado izquierdo: registros y control -->
+      <section>
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-xl font-semibold text-slate-700">Registrar ahorros</h2>
+          <div class="text-sm text-slate-500">Actualiza cada periodo ✓</div>
+        </div>
+
+        <div id="registros" class="space-y-3 max-h-96 overflow-auto pr-2"></div>
+
+        <div class="mt-4 flex gap-2">
+          <button id="guardarBtn" class="btn-secondary">Guardar local</button>
+          <button id="resetBtn" class="btn-danger">Reiniciar</button>
+        </div>
+      </section>
+
+      <!-- Lado derecho: gráfico + acumulado y evidencia preview -->
+      <section>
+        <div class="mb-4 flex items-center justify-between">
+          <h3 class="text-lg font-semibold text-slate-700">Progreso (Gráfico)</h3>
+          <div class="text-sm text-slate-500" id="porcentajeText">0%</div>
+        </div>
+
+        <div class="bg-white border border-slate-100 p-4 rounded-lg shadow-sm">
+          <canvas id="chart" height="220"></canvas>
+        </div>
+
+        <div class="mt-4">
+          <h4 class="text-sm text-slate-600 mb-2">Evidencia (clic para ver)</h4>
+          <div id="evidencePreview" class="grid grid-cols-3 gap-2"></div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- Modal preview -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-content">
+      <button id="closeModal" class="close-btn">✕</button>
+      <img id="modalImg" src="" alt="Evidencia" class="max-w-full max-h-[80vh] object-contain"/>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
